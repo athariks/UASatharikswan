@@ -4,10 +4,10 @@ import java.util.Scanner;
 public class Demo {
 
         // Menyiapkan paramter JDBC untuk koneksi ke datbase
-        static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        static final String DB_URL = "jdbc:mysql://aessa.space/kim1b";
-        static final String USER = "user_daffa";
-        static final String PASS = "admin06";
+        static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        static final String DB_URL = "jdbc:mysql://localhost/bensin";
+        static final String USER = "root";
+        static final String PASS = "12345678";
 
         // Menyiapkan objek yang diperlukan untuk mengelola database
         static Connection conn;
@@ -105,7 +105,7 @@ static void showDataBiayaBensin() {
         rs = stmt.executeQuery(sql);
 
         System.out.println("+--------------------------------+");
-        System.out.println("|    DATA BUKU DI PERPUSTAKAAN   |");
+        System.out.println("| DATA PENGELUARAN BIAYA BENSIN  |");
         System.out.println("+--------------------------------+");
         while (rs.next()) {
             int idBuku = rs.getInt("id_buku");
