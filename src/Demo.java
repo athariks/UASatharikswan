@@ -1,10 +1,11 @@
 import java.sql.*;
 import java.util.Scanner;
+import java.time.*;
 
 public class Demo {
 
         // Menyiapkan paramter JDBC untuk koneksi ke datbase
-        static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         static final String DB_URL = "jdbc:mysql://localhost/bensin";
         static final String USER = "root";
         static final String PASS = "12345678";
@@ -14,7 +15,11 @@ public class Demo {
         static Statement stmt;
         static ResultSet rs;
 
-//        Input Keyboard
+
+        // create current instance object
+        static Instant now = Instant.now();
+
+        // Input Keyboard
         static  Scanner input= new Scanner(System.in);
 
         public static void main(String[] args) {
@@ -27,9 +32,9 @@ public class Demo {
                 stmt = conn.createStatement();
 
                 while (!conn.isClosed()) {
-//                    showMenu();
+                    System.out.println("Connected to Database !!!");
+                    showMenu();
                 }
-
                 stmt.close();
                 conn.close();
 
@@ -38,8 +43,7 @@ public class Demo {
             }
         }
 
-
-//        Show Menu
+    // Show Menu
 static void showMenu() {
     System.out.println("\n========= MENU UTAMA =========");
     System.out.println("1. Insert Data");
@@ -62,13 +66,13 @@ static void showMenu() {
                 insertBiayaBensin();
                 break;
             case 2:
-                showDataBiayaBensin();
+//                showDataBiayaBensin();
                 break;
             case 3:
-                updateBiayaBensin();
+//                updateBiayaBensin();
                 break;
             case 4:
-                deleteBiayaBensin();
+//                deleteBiayaBensin();
                 break;
             default:
                 System.out.println("Pilihan salah!");
@@ -78,18 +82,20 @@ static void showMenu() {
     }
 }
 
-//    Insert Data
+// Insert Data
 static void insertBiayaBensin() {
     try {
         // ambil input dari user
-        System.out.print("Judul: ");
-        String judul = input.nextLine();
-        System.out.print("Pengarang: ");
-        String pengarang = input.nextLine();
+        System.out.print("Harga Bensin : ");
+        int hargaBensin = input.nextInt();
+        System.out.print("Liter Bensin: ");
+        int literBensin = input.nextInt();
+        // get epochValue using getEpochSecond
+        long epochValue = now.getEpochSecond();
 
         // query simpan
-        String sql = "INSERT INTO buku (judul, pengarang) VALUE('%s', '%s')";
-        sql = String.format(sql, judul, pengarang);
+        String sql = "INSERT INTO biaya_bensin (harga_bensin, liter_bensin, created_at) VALUE('%s', '%s', '%s')";
+        sql = String.format(sql, hargaBensin, literBensin, epochValue);
 
         // simpan buku
         stmt.execute(sql);
@@ -98,9 +104,9 @@ static void insertBiayaBensin() {
         e.printStackTrace();
     }
 }
-//    Show Data
+// Show Data
 static void showDataBiayaBensin() {
-    String sql = "SELECT * FROM buku";
+    String sql = "SELECT * FROM biaya_bensin";
     try {
         rs = stmt.executeQuery(sql);
 
@@ -118,8 +124,8 @@ static void showDataBiayaBensin() {
         e.printStackTrace();
     }
 }
-//    Update Data
-    static void updateBiayaBensin() {
+//  Update Data
+static void updateBiayaBensin() {
         try {
             // ambil input dari user
             System.out.print("ID yang mau diedit: ");
@@ -140,10 +146,9 @@ static void showDataBiayaBensin() {
             e.printStackTrace();
         }
     }
-//    Delete Data
+//  Delete Data
 static void deleteBiayaBensin() {
     try {
-
         // ambil input dari user
         System.out.print("ID yang mau dihapus: ");
         int idBuku = input.nextInt();
