@@ -3,7 +3,6 @@ import java.util.Scanner;
 import java.time.*;
 
 public class Demo {
-
         // Menyiapkan paramter JDBC untuk koneksi ke datbase
         static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
@@ -64,13 +63,13 @@ static void showMenu() {
                 insertBiayaBensin();
                 break;
             case 2:
-//                showDataBiayaBensin();
+                showDataBiayaBensin();
                 break;
             case 3:
-//                updateBiayaBensin();
+                updateBiayaBensin();
                 break;
             case 4:
-//                deleteBiayaBensin();
+                deleteBiayaBensin();
                 break;
             default:
                 System.out.println("Pilihan salah!");
@@ -103,8 +102,8 @@ static void insertBiayaBensin() {
     }
 }
 // Show Data
-static void showDataBiayaBensin() {
-    String sql = "SELECT * FROM biaya_bensin";
+static void showDataBiayaBensin()  {
+    String sql = "SELECT * FROM fuelCosts";
     try {
         rs = stmt.executeQuery(sql);
 
@@ -112,11 +111,14 @@ static void showDataBiayaBensin() {
         System.out.println("| DATA PENGELUARAN BIAYA BENSIN  |");
         System.out.println("+--------------------------------+");
         while (rs.next()) {
-            int idBuku = rs.getInt("id_buku");
-            String judul = rs.getString("judul");
-            String pengarang = rs.getString("pengarang");
+            int hargaBensin = rs.getInt("fuel_price");
+            float literBensin = rs.getFloat("fuel_liter");
+            long dateTime = rs.getInt("created_at")-25200;
+            //  Reformat
+            String date =  new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(dateTime*1000));
 
-            System.out.println(String.format("%d. %s -- (%s)", idBuku, judul, pengarang));
+            System.out.println(String.format("Pengeluaran Rp. %s untuk %s liter pada %s", hargaBensin, literBensin, date));
+            System.out.println(date);
         }
     } catch (Exception e) {
         e.printStackTrace();
@@ -127,18 +129,21 @@ static void updateBiayaBensin() {
         try {
             // ambil input dari user
             System.out.print("ID yang mau diedit: ");
-            int idBuku = input.nextInt();
-            System.out.print("Judul: ");
-            String judul =input.nextLine();
-            System.out.print("Pengarang: ");
-            String pengarang = input.nextLine();
+            int idBensin = input.nextInt();
+            System.out.print("Harga Bensin: ");
+            int hargaBensin =input.nextInt();
+            System.out.print("Liter Bensin: ");
+            Float literBensin = input.nextFloat();
+            long updatedTime = now.getEpochSecond();
 
             // query update
-            String sql = "UPDATE buku SET judul='%s', pengarang='%s' WHERE id_buku=%d";
-            sql = String.format(sql, judul, pengarang, idBuku);
+            String sql = "UPDATE fuelCosts SET fuel_price='%s', fuel_liter='%s', updated_at='%s' WHERE id_fuel=%d";
+            sql = String.format(sql, hargaBensin, literBensin, updatedTime,idBensin);
 
             // update data buku
             stmt.execute(sql);
+
+            System.out.println("Data berhasil diubah");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,10 +154,9 @@ static void deleteBiayaBensin() {
     try {
         // ambil input dari user
         System.out.print("ID yang mau dihapus: ");
-        int idBuku = input.nextInt();
-
+        int idFuel = input.nextInt();
         // buat query hapus
-        String sql = String.format("DELETE FROM buku WHERE id_buku=%d", idBuku);
+        String sql = String.format("DELETE FROM fuelCosts WHERE id_fuel=%d", idFuel);
         // hapus data
         stmt.execute(sql);
 
