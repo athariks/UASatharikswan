@@ -6,15 +6,14 @@ public class Demo {
 
         // Menyiapkan paramter JDBC untuk koneksi ke datbase
         static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        static final String DB_URL = "jdbc:mysql://localhost/bensin";
-        static final String USER = "root";
-        static final String PASS = "12345678";
+        static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
+        static final String USER = "user_daffa";
+        static final String PASS = "admin06";
 
         // Menyiapkan objek yang diperlukan untuk mengelola database
         static Connection conn;
         static Statement stmt;
         static ResultSet rs;
-
 
         // create current instance object
         static Instant now = Instant.now();
@@ -57,7 +56,6 @@ static void showMenu() {
     try {
 //        int pilihan = Integer.parseInt(input.readLine());
         int pilihan = input.nextInt();
-
         switch (pilihan) {
             case 0:
                 System.exit(0);
@@ -87,17 +85,17 @@ static void insertBiayaBensin() {
     try {
         // ambil input dari user
         System.out.print("Harga Bensin : ");
-        int hargaBensin = input.nextInt();
+        float hargaBensin = input.nextFloat();
         System.out.print("Liter Bensin: ");
-        int literBensin = input.nextInt();
+        float  literBensin = input.nextFloat();
         // get epochValue using getEpochSecond
         long epochValue = now.getEpochSecond();
 
         // query simpan
-        String sql = "INSERT INTO biaya_bensin (harga_bensin, liter_bensin, created_at) VALUE('%s', '%s', '%s')";
+        String sql = "INSERT INTO fuelCosts (fuel_price, fuel_liter, created_at) VALUE('%s', '%s', '%s')";
         sql = String.format(sql, hargaBensin, literBensin, epochValue);
 
-        // simpan buku
+        // simpan data
         stmt.execute(sql);
 
     } catch (Exception e) {
