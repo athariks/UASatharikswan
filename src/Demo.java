@@ -49,7 +49,7 @@ static void showMenu() {
     System.out.println("3. Edit Data");
     System.out.println("4. Delete Data");
     System.out.println("0. Keluar");
-    System.out.println("");
+    System.out.print("\n");
     System.out.print("PILIHAN> ");
 
     try {
@@ -89,10 +89,11 @@ static void insertBiayaBensin() {
         float  literBensin = input.nextFloat();
         // get epochValue using getEpochSecond
         long epochValue = now.getEpochSecond();
+        long updatedTime = now.getEpochSecond();
 
         // query simpan
-        String sql = "INSERT INTO fuelCosts (fuel_price, fuel_liter, created_at) VALUE('%s', '%s', '%s')";
-        sql = String.format(sql, hargaBensin, literBensin, epochValue);
+        String sql = "INSERT INTO fuelCosts (fuel_price, fuel_liter, created_at, updated_at) VALUE('%s', '%s', '%s', '%s')";
+        sql = String.format(sql,hargaBensin,literBensin,epochValue,updatedTime);
 
         // simpan data
         stmt.execute(sql);
@@ -117,8 +118,8 @@ static void showDataBiayaBensin()  {
             //  Reformat
             String date =  new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(dateTime*1000));
 
-            System.out.println(String.format("Pengeluaran Rp. %s untuk %s liter pada %s", hargaBensin, literBensin, date));
-            System.out.println(date);
+            System.out.printf("Pengeluaran Rp. %s untuk %s liter pada %s%n", hargaBensin, literBensin, date);
+
         }
     } catch (Exception e) {
         e.printStackTrace();
