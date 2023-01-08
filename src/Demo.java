@@ -1,14 +1,15 @@
 package src;
 
-import java.sql.*;
-import java.time.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.Instant;
 import java.util.Scanner;
+
 public class Demo {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
-    static final String USER = "user_daffa";
-    static final String PASS = "admin06";
+
 
     static int SuperPrice, VPowerPrice, VpowerPlusPrice, PertalitePrice, PertamaxPrice, PertamaxTurboPrice;
 
@@ -51,13 +52,12 @@ public class Demo {
         System.out.println("2. Show Data");
         System.out.println("3. Edit Data");
         System.out.println("4. Delete Data");
-        System.out.println("5. Update Data Fuel Station Prices");
-        System.out.println("0. Keluar");
+        System.out.println("5. Insert New Data Fuel Station Price");
+        System.out.println("6. Update Data Fuel Station Price");        System.out.println("0. Keluar");
         System.out.print("\n");
         System.out.print("PILIHAN> ");
 
         try {
-//        int pilihan = Integer.parseInt(input.readLine());
             int pilihan = input.nextInt();
             switch (pilihan) {
                 case 0:
@@ -75,9 +75,9 @@ public class Demo {
                 case 4:
                     deleteDataPetrolCosts();
                     break;
-//                case 5:
-//                    insertFuelStationPrices();
-//                    break;
+                case 5:
+                    insertFuelStationPrices();
+                    break;
 //            case 6:
 //                updateFuelStationPrices();
 //                break;
@@ -188,15 +188,30 @@ public class Demo {
     static void insertFuelStationPrices() {
         try {
 
-            System.out.println("Pilih bahan bakar yang akan diinputkan harganya");
+            System.out.println("Pilih bahan bakar yang akan dimasukan harganya");
+            System.out.println("1. Pertamax");
+            System.out.println("2. Shell");
+            System.out.print("Pilihan : ");
             int selectedFuelStation = input.nextInt();
-
 
              switch (selectedFuelStation){
                  case  1:
-//                     New Method
+                     System.out.println("Silakan masukan harga bahan bakar terbaru :");
+                     System.out.print("Harg Bahan Bakar Pertalite : ");
+                     int pertalitePrice = input.nextInt();
+                     System.out.print("Harg Bahan Bakar Pertamax : ");
+                     int pertamaxPrice = input.nextInt();
+                     System.out.print("Harg Bahan Bakar Turbo : ");
+                     int pertamaxTurboPrice = input.nextInt();
+                     // get epochValue using getEpochSecond
+                     long createdAtTime = now.getEpochSecond();
+                     long updatedAtTime = now.getEpochSecond();
 
-
+                     // Query Insert
+                     String sql = "INSERT INTO pertaminaPrices (pertalite_price, pertamax_price, pertamax_turbo_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s')";
+                     sql = String.format(sql, pertalitePrice, pertamaxPrice, pertamaxTurboPrice, createdAtTime, updatedAtTime);
+                     // simpan data
+                     stmt.execute(sql);
 
                      break;
 
