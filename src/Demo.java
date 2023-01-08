@@ -10,7 +10,10 @@ import java.util.Scanner;
 public class Demo {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
 
-
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
+    static final String USER = "user_daffa";
+    static final String PASS = "admin06";
     static int SuperPrice, VPowerPrice, VpowerPlusPrice, PertalitePrice, PertamaxPrice, PertamaxTurboPrice;
 
     // Menyiapkan objek yang diperlukan untuk mengelola database
@@ -34,6 +37,8 @@ public class Demo {
             stmt = conn.createStatement();
 
             while (!conn.isClosed()) {
+                System.out.println("\n");
+
                 System.out.println("Connected to Database !!!");
                 showMenu();
             }
@@ -53,7 +58,8 @@ public class Demo {
         System.out.println("3. Edit Data");
         System.out.println("4. Delete Data");
         System.out.println("5. Insert New Data Fuel Station Price");
-        System.out.println("6. Update Data Fuel Station Price");        System.out.println("0. Keluar");
+        System.out.println("6. Update Data Fuel Station Price");
+        System.out.println("0. Keluar");
         System.out.print("\n");
         System.out.print("PILIHAN> ");
 
@@ -210,6 +216,9 @@ public class Demo {
                      // Query Insert
                      String sql = "INSERT INTO pertaminaPrices (pertalite_price, pertamax_price, pertamax_turbo_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s')";
                      sql = String.format(sql, pertalitePrice, pertamaxPrice, pertamaxTurboPrice, createdAtTime, updatedAtTime);
+
+                     System.out.print("Data bahan bakar berhasil ditambahkan !!!");
+
                      // simpan data
                      stmt.execute(sql);
 
@@ -220,14 +229,6 @@ public class Demo {
                      break;
 
              }
-
-
-            // query simpan
-            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s', '%s')";
-//            sql = String.format(sql, fuelStation, fuelType, fuelPrice, fuelLiter, createdAtTime, updatedAtTime);
-
-            // simpan data
-            stmt.execute(sql);
 
         }catch (Exception e){
             e.printStackTrace();
