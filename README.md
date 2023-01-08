@@ -1,2 +1,2 @@
 # java-crud-native
-Pembuatan BE CRUD dengan bahasa pemograman JAVA
+Pembuatan BE CRUD NATIVE CONSOLE dengan bahasa pemograman JAVA

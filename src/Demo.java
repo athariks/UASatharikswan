@@ -1,14 +1,8 @@
+package src;
+
 import java.sql.*;
 import java.time.*;
 import java.util.Scanner;
-
-import org.json.simple.JSONObject;
-import java.util.HashMap;
-import java.util.ArrayList;
-
-import java.util.Map;
-import org.json.simple.JSONValue;
-
 public class Demo {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -98,33 +92,6 @@ public class Demo {
     // Insert Data
     static void insertDataPetrolCosts() {
         try {
-////        Array of Object Shell Station
-//        HashMap<String,Integer> ShellStation = new HashMap <>();
-//        ShellStation.put("Super", 14180);
-//        ShellStation.put("VPower", 15100);
-//        ShellStation.put("VPowerPlus", 15530);
-//
-////        Array of Object Pertamina Station
-//        HashMap<String,Integer> PertaminaStation = new HashMap<>();
-//        PertaminaStation.put("Pertalite", 10000);
-//        PertaminaStation.put("Pertamax", 13900);
-//        PertaminaStation.put("PertamaxTurbo", 15200);
-//
-////        Merge 2 Array Of Object
-//        ArrayList FullFuelStation = new ArrayList<>();
-//        FullFuelStation.add(ShellStation);
-//        FullFuelStation.add(PertaminaStation);
-//
-//        JSONObject obj=new JSONObject();
-//        obj.put("FuelStations",FullFuelStation);
-//        obj.toString();
-////        for (int i =0; i<obj.size();i++){
-////            System.out.println(obj[i]);
-////        }
-//
-//                    System.out.println(obj.get("Pertalite"));
-//
-
             // ambil input dari user
             System.out.print("Fuel Station: ");
             String fuelStation = input.next();
@@ -166,7 +133,7 @@ public class Demo {
                 //  Reformat
                 String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(dateTime * 1000));
 
-                System.out.printf("Pengeluaran Rp. %s untuk %s liter pada %s%n", hargaBensin, literBensin, date);
+                System.out.printf("Pengeluaran pada tanggal %s sebanyak Rp. %s untuk %s liter %n", date, hargaBensin, literBensin);
 
             }
         } catch (Exception e) {
