@@ -10,11 +10,6 @@ import java.util.Scanner;
 public class Demo {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
 
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
-    static final String USER = "user_daffa";
-    static final String PASS = "admin06";
-    static int SuperPrice, VPowerPrice, VpowerPlusPrice, PertalitePrice, PertamaxPrice, PertamaxTurboPrice;
 
     // Menyiapkan objek yang diperlukan untuk mengelola database
     static Connection conn;
@@ -130,7 +125,7 @@ public class Demo {
             rs = stmt.executeQuery(sql);
 
             System.out.println("+--------------------------------+");
-            System.out.println("| DATA PENGELUARAN BIAYA BENSIN  |");
+            System.out.println("|    PENGELUARAN BIAYA BENSIN    |");
             System.out.println("+--------------------------------+");
             while (rs.next()) {
                 int hargaBensin = rs.getInt("fuel_price");
@@ -201,32 +196,58 @@ public class Demo {
             int selectedFuelStation = input.nextInt();
 
              switch (selectedFuelStation){
+//                 Harga Bahan Bakar Pertamina
                  case  1:
+                     System.out.println("+-----------------------------------------------------+");
+                     System.out.println("| Silakan masukan harga bahan bakar Pertamina terbaru |");
+                     System.out.println("+-----------------------------------------------------+");
                      System.out.println("Silakan masukan harga bahan bakar terbaru :");
-                     System.out.print("Harg Bahan Bakar Pertalite : ");
+                     System.out.print("Harga Bahan Bakar Pertalite : ");
                      int pertalitePrice = input.nextInt();
                      System.out.print("Harg Bahan Bakar Pertamax : ");
                      int pertamaxPrice = input.nextInt();
                      System.out.print("Harg Bahan Bakar Turbo : ");
                      int pertamaxTurboPrice = input.nextInt();
                      // get epochValue using getEpochSecond
-                     long createdAtTime = now.getEpochSecond();
-                     long updatedAtTime = now.getEpochSecond();
+                     long createdAtTimePertamina = now.getEpochSecond();
+                     long updatedAtTimePertamina = now.getEpochSecond();
 
                      // Query Insert
-                     String sql = "INSERT INTO pertaminaPrices (pertalite_price, pertamax_price, pertamax_turbo_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s')";
-                     sql = String.format(sql, pertalitePrice, pertamaxPrice, pertamaxTurboPrice, createdAtTime, updatedAtTime);
+                     String sqlpertamina = "INSERT INTO pertaminaPrices (pertalite_price, pertamax_price, pertamax_turbo_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s')";
+                     sqlpertamina = String.format(sqlpertamina, pertalitePrice, pertamaxPrice, pertamaxTurboPrice, createdAtTimePertamina, updatedAtTimePertamina);
 
-                     System.out.print("Data bahan bakar berhasil ditambahkan !!!");
+                     System.out.print("Data bahan bakar Pertamina baru berhasil ditambahkan !!!");
 
                      // simpan data
-                     stmt.execute(sql);
+                     stmt.execute(sqlpertamina);
 
                      break;
 
+//                 Harga bahan bakar Shell
+                     case  2:
+                         System.out.println("+-------------------------------------------------+");
+                         System.out.println("| Silakan masukan harga bahan bakar Shell terbaru |");
+                         System.out.println("+-------------------------------------------------+");
+                     System.out.print("Harga Bahan Bakar Super : ");
+                     int superPrice = input.nextInt();
+                     System.out.print("Harg Bahan Bakar V Power : ");
+                     int vPowerPrice = input.nextInt();
+                     // get epochValue using getEpochSecond
+                     long createdAtTimeShell = now.getEpochSecond();
+                     long updatedAtTimeShell = now.getEpochSecond();
+
+                     // Query Insert
+                     String sqlShell = "INSERT INTO shellPrices (super_price, vpower_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s')";
+                         sqlShell = String.format(sqlShell, superPrice, vPowerPrice, createdAtTimeShell, updatedAtTimeShell);
+
+                     System.out.print("Data bahan bakar Shell baru berhasil ditambahkan !!!");
+
+                     // simpan data
+                     stmt.execute(sqlShell);
+
+                     break;
                  default:
-
-                     break;
+                     System.out.println("Pilihan salah!");
 
              }
 
