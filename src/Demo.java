@@ -9,7 +9,10 @@ import java.util.Scanner;
 
 public class Demo {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
-
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
+    static final String USER = "user_daffa";
+    static final String PASS = "admin06";
 
     // Menyiapkan objek yang diperlukan untuk mengelola database
     static Connection conn;
@@ -110,8 +113,12 @@ public class Demo {
             String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s', '%s')";
             sql = String.format(sql, fuelStation, fuelType, fuelPrice, fuelLiter, createdAtTime, updatedAtTime);
 
+
+
             // simpan data
             stmt.execute(sql);
+
+            System.out.println("Data berhasil ditambahkan !!!");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +127,7 @@ public class Demo {
 
     // Show Data
     static void showDataPetrolCosts() {
-        String sql = "SELECT * FROM fuelCosts";
+        String sql = "SELECT * FROM fuelCosts DESCY ORDER BY id_fuel DESC";
         try {
             rs = stmt.executeQuery(sql);
 
@@ -137,6 +144,7 @@ public class Demo {
                 System.out.printf("Pengeluaran pada tanggal %s sebanyak Rp. %s untuk %s liter %n", date, hargaBensin, literBensin);
 
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
