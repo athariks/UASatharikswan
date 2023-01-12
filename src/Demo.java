@@ -110,10 +110,10 @@ public class Demo {
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s', '%s')";
-            sql = String.format(sql, fuelStation, fuelType, fuelPrice, fuelLiter, createdAtTime, updatedAtTime);
+            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
+//            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price ,fuel_liter,created_at, updated_at) VALUE ("+fuelStation+", "+fuelType+","+fuelPrice+",(SELECT "+fuelPrice+"/super_price  FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
 
-
+            sql = String.format(sql, fuelStation, fuelType, fuelPrice, "(SELECT "+fuelPrice+"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1);", createdAtTime, updatedAtTime);
 
             // simpan data
             stmt.execute(sql);
