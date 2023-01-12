@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.Scanner;
 
-public class Demo {
+public class Main {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://aessa.space/fuels";
@@ -24,6 +24,8 @@ public class Demo {
 
     // Input Keyboard
     static Scanner input = new Scanner(System.in);
+    static String fuelStation, fuelType;
+    static int dayFuelCost,fuelStationChoice;
 
     public static void main(String[] args) {
 
@@ -82,9 +84,6 @@ public class Demo {
                 case 5:
                     insertFuelStationPrices();
                     break;
-//            case 6:
-//                updateFuelStationPrices();
-//                break;
                 default:
                     System.out.println("Pilihan salah!");
             }
@@ -97,26 +96,84 @@ public class Demo {
     static void insertDataPetrolCosts() {
         try {
             // ambil input dari user
-            System.out.print("Fuel Station: ");
-            String fuelStation = input.next();
-            System.out.print("Fuel Type : ");
-            String fuelType = input.next();
-            System.out.print("Fuel Price: ");
-            float fuelPrice = input.nextFloat();
-            System.out.print("Fuel Liter: ");
-            float fuelLiter = input.nextFloat();
+            System.out.println("Pilih pengisian stasiun bahan bakar: ");
+            System.out.println("1. Pertamina");
+            System.out.println("2. Shell");
+            System.out.print("Masukan Pilihan Anda : ");
+            fuelStationChoice = input.nextInt();
+
+            while (fuelStationChoice < 1 || fuelStationChoice > 2){
+                System.out.println("\n");
+                System.out.println("Masukan Pilihan yang sudah disediakan dan Pilihlah pengisian stasiun bahan bakar: ");
+                System.out.println("1. Pertamina");
+                System.out.println("2. Shell");
+                System.out.print("Masukan Pilihan Anda : ");
+                fuelStationChoice = input.nextInt();
+            }
+//                PERTAMINA
+                if (fuelStationChoice == 1){
+                    fuelStation = "Pertamina";
+                    System.out.println("Pilih pengisian tipe bahan bakar Pertamina: ");
+                    System.out.println("1. Pertalite");
+                    System.out.println("2. Pertamax");
+                    System.out.println("3. Pertamax Turbo");
+                    System.out.print("Masukan Pilihan anda : ");
+                    int fuelTypeChoice = input.nextInt();
+                    System.out.print("\n");
+
+                    while (fuelTypeChoice < 1 || fuelTypeChoice > 3) {
+                        switch (fuelTypeChoice){
+                            case 1:
+                                fuelType = "Pertalite";
+                            break;
+                            case 2:
+                                fuelType = "Pertamax";
+                            break;
+                            case 3:
+                                fuelType = "Pertamax Turbo";
+                                break;
+                        }
+                    }
+                    System.out.print("Anda menggunakan Bahan Bakar "+ fuelType+"Masukan Pengeluaran anda Rp. /L : Rp. ");
+                    dayFuelCost = input.nextInt();
+                }
+
+//              SHELL
+                if (fuelStationChoice == 2){
+                    fuelStation = "Shell";
+                    System.out.println("Pilih pengisian tipe bahan bakar Shell : ");
+                    System.out.println("1. Super");
+                    System.out.println("2. V Power");
+                    System.out.print("Masukan Pilihan anda : ");
+                    int fuelTypeChoice = input.nextInt();
+                    System.out.print("\n");
+
+                    while (fuelTypeChoice < 1 || fuelTypeChoice > 2) {
+                        switch (fuelTypeChoice){
+                            case 1:
+                                fuelType = "Super";
+                                break;
+                            case 2:
+                                fuelType = "V Power";
+                                break;
+                        }
+                    }
+                    System.out.print("Anda menggunakan Bahan Bakar "+ fuelType+"Masukan Pengeluaran anda Rp. /L : Rp. ");
+                    dayFuelCost = input.nextInt();
+                }
+
             // get epochValue using getEpochSecond
             long createdAtTime = now.getEpochSecond();
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
+//            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
 //            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price ,fuel_liter,created_at, updated_at) VALUE ("+fuelStation+", "+fuelType+","+fuelPrice+",(SELECT "+fuelPrice+"/super_price  FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
 
-            sql = String.format(sql, fuelStation, fuelType, fuelPrice, "(SELECT "+fuelPrice+"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1);", createdAtTime, updatedAtTime);
+//            sql = String.format(sql, fuelStation, fuelType, fuelPrice, "(SELECT "+fuelPrice+"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1);", createdAtTime, updatedAtTime);
 
             // simpan data
-            stmt.execute(sql);
+//            stmt.execute(sql);
 
             System.out.println("Data berhasil ditambahkan !!!");
 
