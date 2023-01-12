@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Instant;
 import java.util.Scanner;
+import java.text.DecimalFormat;
 
 public class Main {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
@@ -18,13 +19,13 @@ public class Main {
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
-
+    static DecimalFormat df = new DecimalFormat("#.##");
     // create current instance object
     static Instant now = Instant.now();
 
     // Input Keyboard
     static Scanner input = new Scanner(System.in);
-    static String fuelStation, fuelType;
+    static String fuelStation, fuelType, selectedType;
     static int dayFuelCost,fuelTypeChoice, fuelStationChoice;
 
     public static void main(String[] args) {
@@ -135,12 +136,15 @@ public class Main {
                     switch (fuelTypeChoice){
                         case 1:
                             fuelType = "Pertalite";
+                            selectedType = "pertalite_price";
                             break;
                         case 2:
                             fuelType = "Pertamax";
+                            selectedType = "pertamax_price";
                             break;
                         case 3:
                             fuelType = "Pertamax Turbo";
+                            selectedType = "pertamax_turbo_price";
                             break;
                     }
                     System.out.print("Anda menggunakan Bahan Bakar "+ fuelType+" Masukan Pengeluaran anda Rp. /L : Rp. ");
@@ -169,9 +173,11 @@ public class Main {
                     switch (fuelTypeChoice){
                         case 1:
                             fuelType = "Super";
+                            selectedType = "super_price";
                             break;
                         case 2:
                             fuelType = "V Power";
+                            selectedType = "vpower_price";
                             break;
                     }
                     System.out.print("Anda menggunakan Bahan Bakar "+ fuelType+" Masukan Pengeluaran anda Rp. /L : Rp. ");
@@ -183,12 +189,13 @@ public class Main {
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-//            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
-              String sql = "INSERT INTO fuelCosts (fuel_station, fuel_type, fuel_price , fuel_liter,  created_at, updated_at) VALUE ('+fuelStation+',"+fuelType+","+dayFuelCost+",(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
+            String tempQuery = "(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1)";
+            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
+//              String sql = "INSERT INTO fuelCosts (fuel_station, fuel_type, fuel_price , fuel_liter,  created_at, updated_at) VALUE ("+fuelStation+","+fuelType+","+dayFuelCost+",(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
 
 
             // simpan data
-            stmt.execute(String.format(sql));
+            stmt.execute(String.format(sql,fuelStation,fuelType,dayFuelCost,tempQuery,createdAtTime,updatedAtTime));
 
             System.out.println("Data berhasil ditambahkan !!!");
 
