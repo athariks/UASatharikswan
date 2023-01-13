@@ -190,12 +190,9 @@ public class Main {
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-                String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
-//            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
-//              String sql = "INSERT INTO fuelCosts (fuel_station, fuel_type, fuel_price , fuel_liter,  created_at, updated_at) VALUE ("+fuelStation+","+fuelType+","+dayFuelCost+",(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
+            String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
 
             // simpan data
-//            stmt.execute(String.format(sql,fuelStation,fuelType,dayFuelCost,tempQuery,createdAtTime,updatedAtTime));
             stmt.execute(TempQuery);
 
             System.out.println("Data berhasil ditambahkan !!!");
