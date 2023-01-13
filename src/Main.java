@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Instant;
 import java.util.Scanner;
-//import java.text.DecimalFormat;
 
 public class Main {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
@@ -19,12 +18,13 @@ public class Main {
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
-//    static DecimalFormat df = new DecimalFormat("#.##");
+
     // create current instance object
     static Instant now = Instant.now();
 
     // Input Keyboard
     static Scanner input = new Scanner(System.in);
+//  Declare Variables
     static String fuelStation, fuelType, selectedType, selectedColumnFuelStation;
     static int dayFuelCost, fuelTypeChoice, fuelStationChoice;
 
@@ -190,16 +190,16 @@ public class Main {
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-            String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
+//            String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
+            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,5000,`"+createdAtTime+"`, `"+updatedAtTime+"`)";
 
             // simpan data
-            stmt.execute(TempQuery);
-
+            stmt.execute(String.format(sql));
             System.out.println("Data berhasil ditambahkan !!!");
 
         } catch (Exception e) {
             e.printStackTrace();
-            e.getMessage();
+//            e.getMessage();
         }
     }
 
