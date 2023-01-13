@@ -25,7 +25,7 @@ public class Main {
     // Input Keyboard
     static Scanner input = new Scanner(System.in);
 //  Declare Variables
-    static String fuelStation, fuelType, selectedType, selectedColumnFuelStation;
+    static String fuelStation="", fuelType="", selectedType="", selectedColumnFuelStation="";
     static int dayFuelCost, fuelTypeChoice, fuelStationChoice;
 
     public static void main(String[] args) {
@@ -191,8 +191,9 @@ public class Main {
 
             // query simpan
 //            String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
-            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,5000,`"+createdAtTime+"`, `"+updatedAtTime+"`)";
-
+//            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,5000,`"+createdAtTime+"`, `"+updatedAtTime+"`)";
+            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s',SELECT '%d'/'%s' FROM '%s' ORDER BY created_at ASC LIMIT 1,'%s', '%s')";
+            sql = String.format(sql,fuelStation,fuelType,dayFuelCost,dayFuelCost,selectedType,selectedColumnFuelStation,createdAtTime,updatedAtTime);
             // simpan data
             stmt.execute(String.format(sql));
             System.out.println("Data berhasil ditambahkan !!!");
@@ -241,7 +242,7 @@ public class Main {
             long updatedTime = now.getEpochSecond();
 
             // query update
-            String sql = "UPDATE fuelCosts SET fuel_price='%s', fuel_liter='%s', updated_at='%s' WHERE id_fuel=%d";
+            String sql = "UPDATE fuelCosts SET fuel_cost='%s', fuel_liter='%s', updated_at='%s' WHERE id_fuel=%d";
             sql = String.format(sql, hargaBensin, literBensin, updatedTime, idBensin);
 
             // update data buku
@@ -262,9 +263,9 @@ public class Main {
             int idFuel = input.nextInt();
             // buat query hapus
             String sql = String.format("DELETE FROM fuelCosts WHERE id_fuel=%d", idFuel);
+
             // hapus data
             stmt.execute(sql);
-
             System.out.println("Data telah terhapus...");
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,7 +283,7 @@ public class Main {
             int selectedFuelStation = input.nextInt();
 
              switch (selectedFuelStation){
-//                 Harga Bahan Bakar Pertamina
+//              Harga Bahan Bakar Pertamina
                  case  1:
                      System.out.println("+-----------------------------------------------------+");
                      System.out.println("| Silakan masukan harga bahan bakar Pertamina terbaru |");
@@ -301,19 +302,18 @@ public class Main {
                      // Query Insert
                      String sqlpertamina = "INSERT INTO pertaminaPrices (pertalite_price, pertamax_price, pertamax_turbo_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s', '%s')";
                      sqlpertamina = String.format(sqlpertamina, pertalitePrice, pertamaxPrice, pertamaxTurboPrice, createdAtTimePertamina, updatedAtTimePertamina);
-
-                     System.out.print("Data bahan bakar Pertamina baru berhasil ditambahkan !!!");
-
+                     
                      // simpan data
                      stmt.execute(sqlpertamina);
+                     System.out.print("Data bahan bakar Pertamina baru berhasil ditambahkan !!!");
 
                      break;
 
 //                 Harga bahan bakar Shell
-                     case  2:
-                         System.out.println("+-------------------------------------------------+");
-                         System.out.println("| Silakan masukan harga bahan bakar Shell terbaru |");
-                         System.out.println("+-------------------------------------------------+");
+                     case  2: 
+                     System.out.println("+-------------------------------------------------+");
+                     System.out.println("| Silakan masukan harga bahan bakar Shell terbaru |");
+                     System.out.println("+-------------------------------------------------+");
                      System.out.print("Harga Bahan Bakar Super : ");
                      int superPrice = input.nextInt();
                      System.out.print("Harg Bahan Bakar V Power : ");
@@ -324,12 +324,11 @@ public class Main {
 
                      // Query Insert
                      String sqlShell = "INSERT INTO shellPrices (super_price, vpower_price, created_at, updated_at) VALUE('%s', '%s', '%s', '%s')";
-                         sqlShell = String.format(sqlShell, superPrice, vPowerPrice, createdAtTimeShell, updatedAtTimeShell);
-
-                     System.out.print("Data bahan bakar Shell baru berhasil ditambahkan !!!");
-
+                    sqlShell = String.format(sqlShell, superPrice, vPowerPrice, createdAtTimeShell, updatedAtTimeShell);
+                    
                      // simpan data
                      stmt.execute(sqlShell);
+                     System.out.print("Data bahan bakar Shell baru berhasil ditambahkan !!!");
 
                      break;
                  default:
