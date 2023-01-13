@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Instant;
 import java.util.Scanner;
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 
 public class Main {
     // Menyiapkan paramter JDBC untuk koneksi ke datbase
@@ -19,14 +19,14 @@ public class Main {
     static Connection conn;
     static Statement stmt;
     static ResultSet rs;
-    static DecimalFormat df = new DecimalFormat("#.##");
+//    static DecimalFormat df = new DecimalFormat("#.##");
     // create current instance object
     static Instant now = Instant.now();
 
     // Input Keyboard
     static Scanner input = new Scanner(System.in);
-    static String fuelStation, fuelType, selectedType;
-    static int dayFuelCost,fuelTypeChoice, fuelStationChoice;
+    static String fuelStation, fuelType, selectedType, selectedColumnFuelStation;
+    static int dayFuelCost, fuelTypeChoice, fuelStationChoice;
 
     public static void main(String[] args) {
 
@@ -50,7 +50,6 @@ public class Main {
             e.printStackTrace();
         }
     }
-
     // Show Menu
     static void showMenu() {
         System.out.println("\n========= MENU UTAMA =========");
@@ -115,6 +114,7 @@ public class Main {
 //          PERTAMINA
             if (fuelStationChoice == 1){
                     fuelStation = "Pertamina";
+                    selectedColumnFuelStation= "pertaminaPrices";
                     System.out.println("Pilih pengisian tipe bahan bakar Pertamina: ");
                     System.out.println("1. Pertalite");
                     System.out.println("2. Pertamax");
@@ -153,8 +153,9 @@ public class Main {
 
 //          SHELL
             if (fuelStationChoice == 2){
-                    fuelStation = "Shell";
-                    System.out.println("Pilih pengisian tipe bahan bakar Shell : ");
+                fuelStation = "Shell";
+                selectedColumnFuelStation= "shellPrices";
+                System.out.println("Pilih pengisian tipe bahan bakar Shell : ");
                     System.out.println("1. Super");
                     System.out.println("2. V Power");
                     System.out.print("Masukan Pilihan anda : ");
@@ -189,18 +190,19 @@ public class Main {
             long updatedAtTime = now.getEpochSecond();
 
             // query simpan
-            String tempQuery = "(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1)";
-            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
+                String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
+//            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_price, fuel_liter, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')";
 //              String sql = "INSERT INTO fuelCosts (fuel_station, fuel_type, fuel_price , fuel_liter,  created_at, updated_at) VALUE ("+fuelStation+","+fuelType+","+dayFuelCost+",(SELECT "+dayFuelCost +"/super_price FROM shellPrices ORDER BY created_at ASC LIMIT 1),"+createdAtTime+","+updatedAtTime+")";
 
-
             // simpan data
-            stmt.execute(String.format(sql,fuelStation,fuelType,dayFuelCost,tempQuery,createdAtTime,updatedAtTime));
+//            stmt.execute(String.format(sql,fuelStation,fuelType,dayFuelCost,tempQuery,createdAtTime,updatedAtTime));
+            stmt.execute(TempQuery);
 
             System.out.println("Data berhasil ditambahkan !!!");
 
         } catch (Exception e) {
             e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -214,7 +216,7 @@ public class Main {
             System.out.println("|    PENGELUARAN BIAYA BENSIN    |");
             System.out.println("+--------------------------------+");
             while (rs.next()) {
-                int hargaBensin = rs.getInt("fuel_price");
+                int hargaBensin = rs.getInt("fuel_cost");
                 float literBensin = rs.getFloat("fuel_liter");
                 long dateTime = rs.getInt("created_at") - 25200;
                 //  Reformat
