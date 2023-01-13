@@ -192,8 +192,8 @@ public class Main {
             // query simpan
 //            String TempQuery =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUES (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,(SELECT `"+dayFuelCost +"`/`"+selectedType+"` FROM `"+selectedColumnFuelStation+"` ORDER BY created_at ASC LIMIT 1),`"+createdAtTime+"`, `"+updatedAtTime+"`)";
 //            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE (`"+fuelStation+"`,`"+fuelType+"`,`"+dayFuelCost+"`,5000,`"+createdAtTime+"`, `"+updatedAtTime+"`)";
-            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s',SELECT '%d'/'%s' FROM '%s' ORDER BY created_at ASC LIMIT 1,'%s', '%s')";
-            sql = String.format(sql,fuelStation,fuelType,dayFuelCost,dayFuelCost,selectedType,selectedColumnFuelStation,createdAtTime,updatedAtTime);
+            String sql =  "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s',(SELECT %d/'%s'.'%s' FROM '%s' ORDER BY created_at ASC LIMIT 1),'%s', '%s')";
+            sql = String.format(sql,fuelStation,fuelType,dayFuelCost,dayFuelCost,selectedColumnFuelStation,selectedType,selectedColumnFuelStation,createdAtTime,updatedAtTime);
             // simpan data
             stmt.execute(String.format(sql));
             System.out.println("Data berhasil ditambahkan !!!");
