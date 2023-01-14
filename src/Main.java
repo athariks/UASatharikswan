@@ -194,13 +194,10 @@ public class Main {
             long createdAtTime = now.getEpochSecond();
             long updatedAtTime = now.getEpochSecond();
 
-            String tempQuery = ("SELECT " + selectedType + " FROM "
+            // SELECT QUERY
+            String selectQuery = ("SELECT " + selectedType + " FROM "
                     + selectedColumnFuelStation
                     + " ORDER BY created_at DESC LIMIT 1");
-            // String datBaru = tempQuery;
-            // System.out.println(Integer.parseInt(datBaru));
-            // String tempQuery = "SELECT super_price FROM shellPrices ORDER BY created_at
-            // DE LIMIT 1";
 
             String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s',SELECT %d/'%s'.'%s' FROM '%s' ORDER BY created_at ASC LIMIT 1,'%s', '%s')";
             // sql = String.format(sql, fuelStation, fuelType, dayFuelCost, dayFuelCost,
@@ -211,12 +208,12 @@ public class Main {
             // selectedColumnFuelStation);
 
             // simpan data
-            rs = stmt.executeQuery(tempQuery);
+            rs = stmt.executeQuery(selectQuery);
 
             if (rs.next()) {
-                int hargaBensin = rs.getInt(selectedType);
+                float hargaBensin = rs.getInt(selectedType);
                 System.out.println(hargaBensin);
-                System.out.print((float) (dayFuelCost / hargaBensin));
+                System.out.print(dayFuelCost / hargaBensin);
             }
 
             // if (stmt.getUpdateCount() != -1) {
