@@ -199,11 +199,6 @@ public class Main {
                     + selectedColumnFuelStation
                     + " ORDER BY created_at DESC LIMIT 1");
 
-            String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s',SELECT %d/'%s'.'%s' FROM '%s' ORDER BY created_at ASC LIMIT 1,'%s', '%s')";
-            // sql = String.format(sql, fuelStation, fuelType, dayFuelCost, dayFuelCost,
-            // selectedColumnFuelStation,
-            // selectedType,
-            // selectedColumnFuelStation, createdAtTime, updatedAtTime);
             // tempQuery = String.format(tempQuery, selectedType,
             // selectedColumnFuelStation);
 
@@ -211,18 +206,22 @@ public class Main {
             rs = stmt.executeQuery(selectQuery);
 
             if (rs.next()) {
-                float hargaBensin = rs.getInt(selectedType);
-                System.out.println(hargaBensin);
-                System.out.print(dayFuelCost / hargaBensin);
-            }
+                float getFuelPrice = rs.getInt(selectedType);
+                float resultFuelPrice = dayFuelCost / getFuelPrice;
 
-            // if (stmt.getUpdateCount() != -1) {
-            // System.out.println("Data berhasil ditambahkan !!!");
-            // }
+                String sql = "INSERT INTO fuelCosts (fuel_station,fuel_type,fuel_cost, fuel_liter, created_at, updated_at) VALUE ('%s','%s','%s','%s','%s', '%s')";
+                sql = String.format(sql, fuelStation, fuelType, dayFuelCost, resultFuelPrice, createdAtTime,
+                        updatedAtTime);
+
+                stmt.execute(sql);
+                if (stmt.getUpdateCount() != -1) {
+                    System.out.println("Data berhasil ditambahkan !!!");
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            // e.getMessage();
+            e.getMessage();
         }
     }
 
