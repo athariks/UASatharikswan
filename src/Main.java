@@ -329,7 +329,10 @@ public class Main {
 
                     // simpan data
                     stmt.execute(sqlpertamina);
-                    System.out.print("Data bahan bakar Pertamina baru berhasil ditambahkan !!!");
+
+                    if (stmt.getUpdateCount() != -1) {
+                        System.out.print("Data bahan bakar Pertamina baru berhasil ditambahkan !!!");
+                    }
 
                     break;
 
@@ -352,7 +355,9 @@ public class Main {
 
                     // simpan data
                     stmt.execute(sqlShell);
-                    System.out.print("Data bahan bakar Shell baru berhasil ditambahkan !!!");
+                    if (stmt.getUpdateCount() != -1) {
+                        System.out.print("Data bahan bakar Shell baru berhasil ditambahkan !!!");
+                    }
 
                     break;
                 default:
