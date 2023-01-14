@@ -362,12 +362,10 @@ public class Main {
                     break;
                 default:
                     System.out.println("Pilihan salah!");
-
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
