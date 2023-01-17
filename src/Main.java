@@ -199,9 +199,6 @@ public class Main {
                     + selectedColumnFuelStation
                     + " ORDER BY created_at DESC LIMIT 1");
 
-            // tempQuery = String.format(tempQuery, selectedType,
-            // selectedColumnFuelStation);
-
             // simpan data
             rs = stmt.executeQuery(selectQuery);
 
@@ -238,7 +235,8 @@ public class Main {
             while (rs.next()) {
                 int hargaBensin = rs.getInt("fuel_cost");
                 float literBensin = rs.getFloat("fuel_liter");
-                long dateTime = rs.getInt("created_at") - 25200;
+
+                long dateTime = rs.getInt("created_at"); //Local time zone
                 // Reformat
                 String date = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
                         .format(new java.util.Date(dateTime * 1000));
